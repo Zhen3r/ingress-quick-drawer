@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="statics/style.css">
+  </head>
+  <body class="bg-dark vh-100" data-bs-theme="dark">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Planner</a>
+        </div>
+    </nav>
+    <div id="alertPlaceholder"></div>
+    <div class="container-fluid p-0" style="height: calc(100% - 56px);">
+      <div class="border h-100" id="map"></div>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="node_modules/papaparse/papaparse.min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="statics/link_utils.js"></script>
+    <script src="statics/map_utils.js"></script>
+    <script src="statics/zplanner.js"></script>
+  </body>
+</html>
