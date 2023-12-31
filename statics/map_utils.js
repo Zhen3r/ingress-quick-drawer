@@ -38,18 +38,22 @@ class InfoDisplayer {
         let item = $("<li/>", {
             class: "list-group-item",
         })
-        for (const [key, value] of Object.entries(portal)) {
-            item.append("<p class='mb-0'>" + key + ": " + value + "</p>" );
-        }
+        // for (const [key, value] of Object.entries(portal)) {
+        //     item.append("<p class='mb-0'>" + key + ": " + value + "</p>" );
+        // }
+        item.text(portal.name);
+        item.append("<p class='mb-0'>start_num: " + portal.start_num + "</p>");
+        item.append("<p class='mb-0'>end_num: " + portal.end_num + "</p>");
         this.portal_list.append(item);
     }
 
     add_link(link) {
         let item = $("<li/>", {
             class: "list-group-item",
+            text: link.from.name + " -> " + link.to.name,
         })
-        item.append("<p class='mb-0'>from: "+link.from.name+"</p>")
-        item.append("<p class='mb-0'>to: "+link.to.name+"</p>")
+        // item.append("<p class='mb-0'>from: "+link.from.name+"</p>")
+        // item.append("<p class='mb-0'>to: "+link.to.name+"</p>")
         this.link_list.append(item);
     }
 
@@ -205,6 +209,10 @@ class Drawer{
             this.draw_field(field);
         });
         this.InfoDisplayer.update_stats(state);
+    }
+
+    destroy() {
+        this.map.remove();
     }
 }
 

@@ -207,6 +207,14 @@ class ElementOriginator {
         };
         this.state.links.push(link_info);
         this.drawer.draw_link(link_info);
+        this.state.portals.forEach(portal => {
+            if (portal.id == from_portal.id) {
+                portal.start_num += 1;
+            }
+            if (portal.id == to_portal.id) {
+                portal.end_num += 1;
+            }
+        });
 
         // update portals, stats, logs
         this.drawer.InfoDisplayer.update_stats(this.state);
