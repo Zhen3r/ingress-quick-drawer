@@ -84,7 +84,6 @@ class ElementOriginator {
 
         //     - check if the new link cross existing links (with turf.js)
         let all_links = this.state.links;
-        console.debug("all_links", all_links);
         for (let i = 0; i < all_links.length; i++) {
             let link = all_links[i];
             let [portal1, portal2] = [link.from, link.to];
@@ -93,7 +92,6 @@ class ElementOriginator {
 
             let cross_points = turf.lineIntersect(link1, link2).features;
             if (cross_points.length == 0) {
-                console.debug("No intersection detected.")
                 continue;
             }
             let first_cross_point = cross_points[0];
@@ -147,20 +145,29 @@ class ElementOriginator {
             }
         }
 
+        console.log("The new fields are:", new_fields);
 
         // determine the orientation(left/right) of the new field
         // for each orientation, choose the one with larger area
         let largest_fields = {left: {field: null, area: 0}, right: {field: null, area: 0}};
         new_fields.forEach(field => {
-            console.log(field);
-            let p1 = turf.point([field[0].lng, field[0].lat]);
-            let p2 = turf.point([field[2].lng, field[2].lat]);
+            let p1 = turf.point([from_portal.lng, from_portal.lat]);
+            let p2 = turf.point([to_portal.lng, to_portal.lat]);
             let p3 = turf.point([field[1].lng, field[1].lat]);
             
             let bearingP1P2 = turf.bearing(p1, p2);
             let bearingP1P3 = turf.bearing(p1, p3);
+
+            let theta = bearingP1P3 - bearingP1P2;
+            theta = theta < 0 ? theta + 360 : theta;
+
+            console.log(
+                "bearing",
+                from_portal.name, to_portal.name, field[1].name,
+                bearingP1P2, bearingP1P3, theta
+            )
             
-            if (bearingP1P3 > bearingP1P2) {
+            if (theta > 180) {
                 // P3 is to the left of the line P1P2
                 let left_field = turf.polygon([[p1.geometry.coordinates, p2.geometry.coordinates, p3.geometry.coordinates, p1.geometry.coordinates]]);
                 let left_field_area = turf.area(left_field);
@@ -168,7 +175,7 @@ class ElementOriginator {
                     largest_fields.left.field = field;
                     largest_fields.left.area = left_field_area;
                 }
-            } else if (bearingP1P3 < bearingP1P2) {
+            } else if (theta < 180) {
                 // P3 is to the right of the line P1P2
                 let right_field = turf.polygon([[p1.geometry.coordinates, p2.geometry.coordinates, p3.geometry.coordinates, p1.geometry.coordinates]]);
                 let right_field_area = turf.area(right_field);
@@ -200,10 +207,9 @@ class ElementOriginator {
         };
         this.state.links.push(link_info);
         this.drawer.draw_link(link_info);
-        
-
 
         // update portals, stats, logs
+        this.drawer.InfoDisplayer.update_stats(this.state);
     }
 
     add_field(portal1, portal2, portal3) {
@@ -223,7 +229,7 @@ class ElementOriginator {
     restore(memento) {
         this.state = memento.state;
         drawer.clear();
-        drawer.draw(this.state);
+        drawer.from_state(this.state);
     }
 }
 
