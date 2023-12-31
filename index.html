@@ -1,29 +1,135 @@
 <!doctype html>
-<html lang="en" >
-  <head>
+<html lang="en">
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="statics/style.css">
-  </head>
-  <body class="bg-dark vh-100" data-bs-theme="dark">
+</head>
+
+<body class="bg-dark vh-100 d-flex flex-column" data-bs-theme="dark">
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Planner</a>
         </div>
     </nav>
     <div id="alertPlaceholder"></div>
-    <div class="container-fluid p-0" style="height: calc(100% - 56px);">
-      <div class="border h-100" id="map"></div>
+    <div class="container-fluid flex-fill" id="main-container">
+        <div class="row">
+            <div class="card-container col-lg-4 p-3">
+
+                <button type="button" class="btn btn-secondary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    data-bs-whatever="@getbootstrap">Input portals</button>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Input Portals</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">Portals csv:</label>
+                                        <textarea class="form-control" id="message-text" style="min-height: 200px;"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="">Stats</h5>
+                        <ul class="list-group" id="stats">
+                            <li class="list-group-item">Portals: <span id="portal-num">...</span></li>
+                            <li class="list-group-item">Links: <span id="link-num">...</span></li>
+                            <li class="list-group-item">Fields: <span id="field-num">...</span></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion" id="accordion1">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                Portals
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                            <div class="accordion-body">
+                                <ul class="list-group" id="portal-list"> </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                Links
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                            <div class="accordion-body">
+                                <ul class="list-group" id="link-list"> </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                Fields
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                            <div class="accordion-body">
+                                <ul class="list-group" id="field-list"> </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                Logs
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                            <div class="accordion-body">
+                                <ul class="list-group" id="log-list"> </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg min-vh-50" id="map"></div>
+        </div>
     </div>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="node_modules/leaflet/dist/leaflet.js"></script>
     <script src="node_modules/papaparse/papaparse.min.js"></script>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/@turf/turf/turf.min.js"></script>
     <script src="statics/link_utils.js"></script>
     <script src="statics/map_utils.js"></script>
     <script src="statics/zplanner.js"></script>
-  </body>
+</body>
+
 </html>

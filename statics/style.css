@@ -1,7 +1,38 @@
 #alert {
-    position:fixed; 
-    top: 80px; 
+    position: fixed;
+    top: 80px;
     left: 80px;
     width: calc(100vw - 160px);
-    z-index:9999999; 
+    z-index: 9999999;
+}
+
+#map {
+    min-height: 80vh;
+    max-height: 100vh;
+}
+
+body {
+    overflow: hidden;
+}
+
+@media screen and (max-width: 991px) {
+    body {
+        overflow: auto !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #main-container > .row {
+        height: 100%;
+    }
+}
+
+#main-container  {
+    max-height: calc(100vh - 56px);
+}
+
+
+.card-container {
+    height: 100%;
+    overflow-y: auto;
 }
