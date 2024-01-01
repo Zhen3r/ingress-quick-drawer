@@ -1,8 +1,8 @@
 DRAW_PARAMS = {
     portal: {
-        radius: 10,
+        radius: 13,
         color: '#3388ff',
-        weight: 1.5,
+        weight: 1.8,
         opacity: 1,
         smoothFactor: 1,
         interactive: true,
@@ -42,8 +42,10 @@ class InfoDisplayer {
         //     item.append("<p class='mb-0'>" + key + ": " + value + "</p>" );
         // }
         item.text(portal.name);
-        item.append("<p class='mb-0'>start_num: " + portal.start_num + "</p>");
-        item.append("<p class='mb-0'>end_num: " + portal.end_num + "</p>");
+        item.append("&nbsp;&nbsp;");
+        item.append("<span class='badge bg-secondary'>start: " + portal.start_num + "</span>");
+        item.append("&nbsp;&nbsp;");
+        item.append("<span class='badge bg-secondary'>end: " + portal.end_num + "</span>");
         this.portal_list.append(item);
     }
 
@@ -84,6 +86,12 @@ class InfoDisplayer {
         this.portal_list.empty();
         this.link_list.empty();
         this.field_list.empty();
+
+        state.portals = state.portals.sort((b, a) => {
+            return (a.start_num + a.end_num) - (b.start_num + b.end_num)
+        });
+        console.log(state.portals)
+
         state.portals.forEach((portal) => {
             this.add_portal(portal);
         });
@@ -113,6 +121,7 @@ class Drawer{
         this.map_layer_portal = L.layerGroup().addTo(this.map);
         this.map_layer_link = L.layerGroup().addTo(this.map);
         this.map_layer_field = L.layerGroup().addTo(this.map);
+        this.map_layer_portal_info = L.layerGroup().addTo(this.map);
 
         let baseMaps = {
             "OpenStreetMap":this.base_map,
@@ -122,6 +131,7 @@ class Drawer{
             "Portals": this.map_layer_portal,
             "Links": this.map_layer_link,
             "Fields": this.map_layer_field,
+            "Portal Info": this.map_layer_portal_info,
         };
 
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(this.map);
@@ -132,6 +142,7 @@ class Drawer{
     }
     
     draw_portals(portals) {
+        this.map.flyTo([portals[0].lat, portals[0].lng], 15);
         function customTip() {
             this.unbindTooltip();
             if (!this.isPopupOpen()) this.bindTooltip(this.options.portal.name, {
@@ -151,7 +162,30 @@ class Drawer{
                 .on('mouseover', customTip)
                 .on('mouseout', customPop);
             this.InfoDisplayer.add_portal(portal);
-        })
+        });
+
+        this.draw_portal_info(portals);
+    }
+
+    draw_portal_info(portals) {
+        this.clear_portal_info();
+        portals.forEach((portal) => {
+            L.marker([portal.lat, portal.lng], {
+                icon: L.divIcon({
+                    className: 'text-labels',   // Set class for CSS styling
+                    html: (
+                        '<div>' + portal.name + '<br>' + 
+                            '<span class="end_num">' + portal.end_num + '</span>' +
+                            "<div class='space'></div>" +
+                            '<span class="start_num">' + portal.start_num + '</span>' + 
+                        '</div>'
+
+                    ),
+                }),
+                interactive: false,
+                zIndexOffset: 1000
+            }).addTo(this.map_layer_portal_info);
+        });
     }
 
     draw_link(link) {
@@ -193,6 +227,9 @@ class Drawer{
     clear_field() {
         this.map_layer_field.clearLayers();
     }
+    clear_portal_info() {
+        this.map_layer_portal_info.clearLayers();
+    }
 
     clear() {
         // this.clear_portal();
@@ -202,6 +239,7 @@ class Drawer{
 
     from_state(state) {
         // this.draw_portals(state.portals);
+        this.draw_portal_info(state.portals);
         state.links.forEach((link) => {
             this.draw_link(link);
         });

@@ -218,6 +218,7 @@ class ElementOriginator {
 
         // update portals, stats, logs
         this.drawer.InfoDisplayer.update_stats(this.state);
+        this.drawer.draw_portal_info(this.state.portals);
     }
 
     add_field(portal1, portal2, portal3) {

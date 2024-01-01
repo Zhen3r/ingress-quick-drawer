@@ -40,3 +40,29 @@ body {
 path:focus {
     outline: none;
 }
+
+.text-labels {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #3388ffcc;
+    width: 10rem !important;
+    margin-top: calc( -1.8rem) !important;
+    margin-left: calc( -5rem) !important;
+    text-align: center;
+    line-height: 1.1rem;
+}
+
+.text-labels div span {
+    font-size: 0.65rem;
+    font-weight: normal;
+    color: #3388ff;
+    /* border: solid 1px; */
+    border-radius: 5px;
+    background-color: #3388ff33;
+    padding: 0 3px ;
+}
+
+.text-labels div.space{
+    display: inline-block;
+    width: calc(14px + 1rem);
+}
